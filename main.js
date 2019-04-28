@@ -33,7 +33,7 @@ function init() {
     abiDecoder.addABI(json);
     ens = web3.eth
       .contract(json)
-      .at("0xfeb280a203edffa061684986dda8d5905e97e064");
+      .at("0x81c103c2080dc9c819c6c5fccde3a10c3edfde1c");
   });
 }
 
