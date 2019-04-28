@@ -1,0 +1,195 @@
+<html>
+  <title>Ethereum Name Service</title>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/abi-decoder@1.2.0/dist/abi-decoder.js"></script>
+  </head>
+  <body>
+    <div class="nav-bar">
+      Ethereum Name Service
+    </div>
+    <div class="container" style="min-width: 1080px;">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-8">
+          <div class="jumbotron">
+            <h1>Ethereum Name Service</h1>
+            <p>
+              Current Address: <span id="span_address"></span>
+            </p>
+          </div>
+          <div class="row">
+            <div class="col-6 col-lg-4">
+              <h2>Register</h2>
+              <p>
+                Register domain by name and address. (0.1 eth)
+              </p>
+              <p>
+                <div class="input-group mb-3">
+                    <input type="text" id="register_name" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" id="register_address" class="form-control" placeholder="Address" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="register($('#register_name').val(), $('#register_address').val());">Send</button>
+              </p>
+            </div>
+            <!--/span-->
+            <div class="col-6 col-lg-4">
+              <h2>Query By Name</h2>
+              <p>
+                Query address by name (0.01 eth, 0.005 eth for contract, 0.05
+                eth for name holder)
+              </p>
+              <p>
+                <div class="input-group mb-3">
+                    <input type="text" id="querybyname_name" class="form-control" placeholder="Domain Name" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="queryByName($('#querybyname_name').val());">Send</button>
+              </p>
+            </div>
+            <!--/span-->
+            <div class="col-6 col-lg-4">
+              <h2>Query By Address</h2>
+              <p>
+                Query name by address (0.01 eth, 0.005 eth for contract, 0.05
+                eth for name holder)
+              </p>
+              <p>
+                <div class="input-group mb-3">
+                    <input type="text" id="querybyaddress_address" class="form-control" placeholder="Domain Address" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="queryByAddress($('#querybyaddress_address').val());">Send</button>
+              </p>
+            </div>
+            <!--/span-->
+            <div class="col-6 col-lg-4">
+              <h2>Change Address</h2>
+              <p>
+                Change address of name. (0.1eth, Name holder only)
+              </p>
+              <p>
+                <div class="input-group mb-3">
+                    <input type="text" id="changeaddress_name" class="form-control" placeholder="Domain name" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" id="changeaddress_address" class="form-control" placeholder="New Address" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="changeAddress($('#changeaddress_name').val(), $('#changeaddress_address').val());">Send</button>
+              </p>
+            </div>
+            <!--/span-->
+            <div class="col-6 col-lg-4">
+              <h2>Transfer Name Ownership</h2>
+              <p>
+                Transfer name ownership to new owner. (0.1eth, Name holder only)
+              </p>
+              <p>
+                <div class="input-group mb-3">
+                    <input type="text" id="tf_name" class="form-control" placeholder="Domain name" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" id="tf_owner" class="form-control" placeholder="New Owner" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="transferNameOwnership($('#tf_name').val(), $('#tf_owner').val());">Send</button>
+              </p>
+            </div>
+            <!--/span-->
+            <div class="col-6 col-lg-4">
+              <h2>Withdraw Ethereum</h2>
+              <p>
+                Withdraw ethereum of contract. (Contract Owner only).
+              </p>
+              <div class="input-group mb-3">
+                <input id="withdraw_eth" type="text" class="form-control" placeholder="Value (eth)" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <button type="submit" class="btn btn-primary" onclick="withdraw($('#withdraw_eth').val());">Send</button>
+            </div>
+            <div class="col-12">
+              <h2>Self Destruct</h2>
+              <p>
+                destruct this contract. (Contract Owner only).
+              </p>
+              <p>
+                <button type="submit" class="btn btn-primary" onclick="destruct();">Send</button>
+              </p>
+            </div>
+            <!--/span-->
+          </div>
+          <!--/row-->
+        </div>
+        <!--/span-->
+
+        <div class="col-4 sidebar-offcanvas" id="sidebar">
+          <h2>Transaction List</h2>
+          <div id="transaction-list">
+          
+          </div>
+        </div>
+        <!--/span-->
+      </div>
+      <!--/row-->
+
+      <hr />
+    </div>
+  </body>
+  <style>
+    .nav-bar {
+      background: #212529;
+      font-size: 24px;
+      padding: 8px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+    .col-6 p {
+        font-size: 12px;
+    }
+    .col-6 button {
+        position: absolute;
+        bottom: 10px;
+    }
+    .col-6 {
+        margin-bottom: 10px;
+        height: 230px;
+    }
+    @media (min-width: 1400px) {
+        .container {
+            max-width: 1300px;
+        }
+    }
+
+    .spinner-border {
+        width: 14px;
+        height: 14px;
+        margin-bottom: 3px;
+        margin-left: 5px;
+    }
+
+    #transaction-list {
+        word-wrap: break-word;
+    }
+
+  </style>
+  <script src="main.js"></script>
+</html>
