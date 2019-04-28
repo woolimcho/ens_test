@@ -2,30 +2,21 @@ let ens = null;
 let account = null;
 
 window.addEventListener("load", async () => {
-  // Modern dapp browsers...
   if (window.ethereum) {
     window.web3 = new Web3(ethereum);
     try {
-      // Request account access if needed
       await ethereum.enable();
       init();
-      // Acccounts now exposed
     } catch (error) {
-      // User denied account access...
+      alert(error);
     }
   }
-  // Legacy dapp browsers...
   else if (window.web3) {
     window.web3 = new Web3(web3.currentProvider);
-    // Acccounts always exposed
-    web3.eth.sendTransaction({
-      /* ... */
-    });
   }
-  // Non-dapp browsers...
   else {
     alert(
-      "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      "Could not find metamask"
     );
   }
 });
@@ -43,24 +34,6 @@ function init() {
     ens = web3.eth
       .contract(json)
       .at("0xfeb280a203edffa061684986dda8d5905e97e064");
-  });
-  var options = {
-    fromBlock: "0x0",
-    address: "0x0A22aBDfE9c05EaF2293b994F84d9fCF60029a9A"
-  };
-  var subscription = web3.eth.subscribe("logs", options, function(
-    error,
-    result
-  ) {
-    if (error || result == null) {
-      console.log("Error when watching incoming transactions: ", error.message);
-      return;
-    }
-    console.log("Got something back: ", result);
-    // code continues...
-  });
-  subscription.on("data", function(log) {
-    console.log(log);
   });
 }
 
@@ -92,7 +65,7 @@ function getResult(receipt) {
 }
 
 function addTransaction(txHash, description) {
-    console.log(txHash, description);
+    if(!txHash) return;
     $('input').val('');
     let html = `<div id='txlist-${txHash}' class=\"alert alert-primary\" role=\"alert\"><b>${description}</b><br><div style="word-wrap: break-word;">txHash: ${txHash}</div><b><br><div class=\"res\">Pending <\/b><div class=\"spinner-border\" role=\"status\"><span class=\"sr-only\">Loading...<\/span><\/div><\/div><\/div>`;
     $('#transaction-list').prepend(html);
