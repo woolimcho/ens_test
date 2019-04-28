@@ -67,7 +67,7 @@ function getResult(receipt) {
 function addTransaction(txHash, description) {
     if(!txHash) return;
     $('input').val('');
-    let html = `<div id='txlist-${txHash}' class=\"alert alert-primary\" role=\"alert\"><b>${description}</b><br><div style="word-wrap: break-word;">txHash: <a href="https://ropsten.etherscan.io/tx/${txHash}">${txHash}</a></div><b><br><div class=\"res\">Pending <\/b><div class=\"spinner-border\" role=\"status\"><span class=\"sr-only\">Loading...<\/span><\/div><\/div><\/div>`;
+    let html = `<div id='txlist-${txHash}' class=\"alert alert-primary\" role=\"alert\"><b>${description}</b><br><div style="word-wrap: break-word;">txHash: <a href="https://ropsten.etherscan.io/tx/${txHash}" target="_blank">${txHash}</a></div><b><br><div class=\"res\">Pending <\/b><div class=\"spinner-border\" role=\"status\"><span class=\"sr-only\">Loading...<\/span><\/div><\/div><\/div>`;
     $('#transaction-list').prepend(html);
 }
 
